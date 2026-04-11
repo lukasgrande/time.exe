@@ -242,7 +242,7 @@ function startMiniLoadingSequential(popup, index = 0) {
           phase = "up"; // switch to loading
         }
       } else {
-        value += 0.5;
+        value += 0.4;
       }
 
       if (value >= 100) finish();
