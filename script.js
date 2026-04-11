@@ -92,7 +92,7 @@ function getPopupSize() {
   temp.style.visibility = "hidden";
 
   temp.innerHTML = `
-    <div class="popupHeader">TIME.EXE</div>
+    <div class="popupHeader">time.exe</div>
     <div class="popupContent">
       <p>LOADING...</p>
       <div class="miniBar"><div class="miniProgress"></div></div>
@@ -138,7 +138,7 @@ function spawnSequentialPopup() {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">TIME.EXE</div>
+    <div class="popupHeader">time.exe</div>
     <div class="popupContent">
       <p>LOADING...</p>
 
@@ -369,7 +369,7 @@ function spawnExtraPopup(indexOverride) {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">TIME.EXE</div>
+    <div class="popupHeader">time.exe</div>
     <div class="popupContent">
       <p>LOADING...</p>
       <div class="miniBar">
@@ -512,7 +512,7 @@ function spawnPatternPopup(x, y) {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">TIME.EXE</div>
+    <div class="popupHeader">time.exe</div>
     <div class="popupContent">
       <p>LOADING...</p>
 
@@ -864,7 +864,7 @@ function spawnPostPatternPopup() {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">TIME.EXE</div>
+    <div class="popupHeader">time.exe</div>
     <div class="popupContent">
       <p>LOADING...</p>
 
@@ -986,7 +986,7 @@ function spawnFinalPopup() {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">TIME.EXE</div>
+    <div class="popupHeader">time.exe</div>
     <div class="popupContent">
       <p>LOADING...</p>
       <div class="miniBar">
@@ -1106,7 +1106,7 @@ function startSpamPopups() {
     popup.style.top = y + "px";
 
     popup.innerHTML = `
-      <div class="popupHeader">TIME.EXE</div>
+      <div class="popupHeader">time.exe</div>
       <div class="popupContent">
         <p>LOADING...</p>
 
