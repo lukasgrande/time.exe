@@ -18,6 +18,7 @@ let spamMode = false;
 let activeSpamPopups = 0;
 const spamTarget = 500;
 let reversePatternDone = false;
+const isMobile = window.innerWidth < 600;
 
 function bindMainButton() {
   const btn = document.getElementById("mainBtn");
@@ -119,20 +120,26 @@ function spawnSequentialPopup() {
   const popupWidth = 300;
   const popupHeight = 150;
 
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
+  let x, y;
 
-  // how far from center popups are allowed
-  const spreadX = window.innerWidth * 0.3;
-  const spreadY = window.innerHeight * 0.3;
+  if (isMobile) {
+    // 📱 just center it (super simple, no stacking yet)
+    x = (window.innerWidth - popupWidth) / 2;
+    y = (window.innerHeight - popupHeight) / 2;
+  } else {
+    // 💻 your existing behavior
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
-  // random offset from center
-  let x = centerX + (Math.random() - 0.5) * spreadX;
-  let y = centerY + (Math.random() - 0.5) * spreadY;
+    const spreadX = window.innerWidth * 0.3;
+    const spreadY = window.innerHeight * 0.3;
 
-  // 🔒 clamp so NOTHING gets cut off
-  x = Math.max(0, Math.min(x, window.innerWidth - popupWidth));
-  y = Math.max(0, Math.min(y, window.innerHeight - popupHeight));
+    x = centerX + (Math.random() - 0.5) * spreadX;
+    y = centerY + (Math.random() - 0.5) * spreadY;
+
+    x = Math.max(0, Math.min(x, window.innerWidth - popupWidth));
+    y = Math.max(0, Math.min(y, window.innerHeight - popupHeight));
+  }
 
   popup.style.left = x + "px";
   popup.style.top = y + "px";
