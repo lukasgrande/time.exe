@@ -270,7 +270,10 @@ button,
   box-shadow: inset -2px -2px #ffffff, inset 2px 2px #808080;
 }
 
-
+.popupHeader {
+  cursor: grab;
+  touch-action: none; /* 🔥 prevents scrolling while dragging */
+}
 
 .staticWindow {
   z-index: 1;

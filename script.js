@@ -19,6 +19,24 @@ let activeSpamPopups = 0;
 const spamTarget = 500;
 let reversePatternDone = false;
 const isMobile = window.innerWidth < 600;
+let spawnIndex = 0;
+
+function getRandomPosition(width, height) {
+  const padding = 20;
+
+  const rows = 4; // 👈 try 3–5 depending on feel
+  const rowHeight = window.innerHeight / rows;
+
+  // 🎯 FORCE even vertical distribution
+  const row = spawnIndex % rows;
+  spawnIndex++;
+
+  const y = row * rowHeight + (rowHeight - height) / 2; // centered inside row
+
+  const x = padding + Math.random() * (window.innerWidth - width - padding * 2);
+
+  return { x, y };
+}
 
 function bindMainButton() {
   const btn = document.getElementById("mainBtn");
@@ -41,8 +59,6 @@ function bindMainButton() {
 
     /*//if (!loading) {
     loading = true;
-
-     👇 DEBUG SKIP
   completedPopups = 10;
   popupIndex = 10;
   patternMode = true;
@@ -56,20 +72,23 @@ function bindMainButton() {
 function startPopupSequence() {
   setTimeout(() => {
     showNextPopup();
-  }, 2000); // ⏱ 7 second delay
+  }, 500); // ⏱ 7 second delay
 }
 
 function showNextPopup() {
   if (popupIndex >= maxPopups) return;
 
   popupIndex++;
-  spawnSequentialPopup();
+
+  setTimeout(() => {
+    spawnSequentialPopup();
+  }, 500); // ⏱ 1 sec delay
 }
 
 function startLoading() {
   setTimeout(() => {
     startPopupSequence();
-  }, 2000); // ⏱ fake loading time (adjust if you want)
+  }, 1000); // ⏱ fake loading time (adjust if you want)
 }
 
 function reset() {
@@ -93,7 +112,7 @@ function getPopupSize() {
   temp.style.visibility = "hidden";
 
   temp.innerHTML = `
-    <div class="popupHeader">time.exe</div>
+    <div class="popupHeader">TIME.EXE</div>
     <div class="popupContent">
       <p>LOADING...</p>
       <div class="miniBar"><div class="miniProgress"></div></div>
@@ -117,8 +136,8 @@ function spawnSequentialPopup() {
   const popup = document.createElement("div");
   popup.className = "popup";
 
-  const popupWidth = 300;
-  const popupHeight = 150;
+  const popupWidth = isMobile ? 340 : 300;
+  const popupHeight = isMobile ? 180 : 150;
 
   let x, y;
 
@@ -127,25 +146,16 @@ function spawnSequentialPopup() {
     x = (window.innerWidth - popupWidth) / 2;
     y = (window.innerHeight - popupHeight) / 2;
   } else {
-    // 💻 your existing behavior
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-
-    const spreadX = window.innerWidth * 0.3;
-    const spreadY = window.innerHeight * 0.3;
-
-    x = centerX + (Math.random() - 0.5) * spreadX;
-    y = centerY + (Math.random() - 0.5) * spreadY;
-
-    x = Math.max(0, Math.min(x, window.innerWidth - popupWidth));
-    y = Math.max(0, Math.min(y, window.innerHeight - popupHeight));
+    const pos = getRandomPosition(popupWidth, popupHeight);
+    x = pos.x;
+    y = pos.y;
   }
 
   popup.style.left = x + "px";
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">time.exe</div>
+    <div class="popupHeader">TIME.EXE</div>
     <div class="popupContent">
       <p>LOADING...</p>
 
@@ -197,7 +207,7 @@ function startMiniLoadingSequential(popup, index = 0) {
         paused = true;
         hasPaused = true;
 
-        setTimeout(() => (paused = false), 7000);
+        setTimeout(() => (paused = false), 8000);
         return;
       }
 
@@ -208,11 +218,11 @@ function startMiniLoadingSequential(popup, index = 0) {
     }, 50);
   } else if (index === 2) {
     interval = setInterval(() => {
-      let inc = 0.3;
+      let inc = 0.6; // ⬅️ was 0.3
 
       if (value > 80) {
-        if (Math.random() < 0.7) return;
-        inc = 0.1;
+        if (Math.random() < 0.5) return; // ⬅️ was 0.7 (less stalling)
+        inc = 0.2; // ⬅️ was 0.1
       }
 
       value += inc;
@@ -221,13 +231,26 @@ function startMiniLoadingSequential(popup, index = 0) {
       bar.style.width = value + "%";
     }, 50);
   } else if (index === 3) {
+    let phase = "down";
+    value = 70; // 👈 IMPORTANT: start somewhere visible
+
     interval = setInterval(() => {
-      value += 5;
+      if (phase === "down") {
+        value -= 2;
+
+        if (value <= 10) {
+          phase = "up"; // switch to loading
+        }
+      } else {
+        value += 0.5;
+      }
+
       if (value >= 100) finish();
+      if (value < 0) value = 0;
+
       bar.style.width = value + "%";
     }, 50);
   }
-
   // 🆕 4️⃣ DELAYED START
   else if (index === 4) {
     setTimeout(() => {
@@ -261,13 +284,15 @@ function startMiniLoadingSequential(popup, index = 0) {
 
   // 🆕 7️⃣ 8️⃣ 9️⃣ CHAIN START
   else if (index === 7) {
-    startDelayedLoading(0);
-
-    startDelayedLoading(0); // start immediately
+    startDelayedLoading(1000);
   } else if (index === 8) {
-    startDelayedLoading(2000); // start after 0.8s
+    startDelayedLoading(4000); // start after 0.8s
   } else if (index === 9) {
-    startDelayedLoading(4000); // start after 1.6s
+    startDelayedLoading(7000); // start after 1.6s
+  } else if (index === 10) {
+    startDelayedLoading(10000); // start after 1.6s
+  } else if (index === 11) {
+    startDelayedLoading(13000); // start after 1.6s
   }
 
   function startDelayedLoading(delay) {
@@ -315,7 +340,7 @@ function startMiniLoadingSequential(popup, index = 0) {
 
             setTimeout(() => {
               spawnPostPatternPopup();
-            }, 5000);
+            }, 2000);
 
             return;
           }
@@ -335,20 +360,28 @@ function startMiniLoadingSequential(popup, index = 0) {
 
         // when BOTH are closed → spawn 7,8,9
         if (pairFinished === 2) {
-          spawnExtraPopup(7);
-          spawnExtraPopup(8);
-          spawnExtraPopup(9);
+          [7, 8, 9, 10, 11].forEach((i, idx) => {
+            setTimeout(() => {
+              spawnExtraPopup(i);
+            }, idx * 150); // 👈 THIS fixes overlap
+          });
         }
 
         return;
       }
 
       // 7,8,9 chain
-      if (index === 7 || index === 8 || index === 9) {
+      if (
+        index === 7 ||
+        index === 8 ||
+        index === 9 ||
+        index === 10 ||
+        index === 11
+      ) {
         chainFinished++;
 
         // ONLY when all 3 closed → start pattern
-        if (chainFinished === 3) {
+        if (chainFinished === 5) {
           patternMode = true;
           startPatternPopups();
         }
@@ -369,14 +402,13 @@ function spawnExtraPopup(indexOverride) {
 
   const { width, height } = getPopupSize();
 
-  const x = Math.random() * (window.innerWidth - width);
-  const y = Math.random() * (window.innerHeight - height);
+  const { x, y } = getRandomPosition(width, height);
 
   popup.style.left = x + "px";
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">time.exe</div>
+    <div class="popupHeader">TIME.EXE</div>
     <div class="popupContent">
       <p>LOADING...</p>
       <div class="miniBar">
@@ -519,7 +551,7 @@ function spawnPatternPopup(x, y) {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">time.exe</div>
+    <div class="popupHeader">TIME.EXE</div>
     <div class="popupContent">
       <p>LOADING...</p>
 
@@ -871,7 +903,7 @@ function spawnPostPatternPopup() {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">time.exe</div>
+    <div class="popupHeader">TIME.EXE</div>
     <div class="popupContent">
       <p>LOADING...</p>
 
@@ -993,7 +1025,7 @@ function spawnFinalPopup() {
   popup.style.top = y + "px";
 
   popup.innerHTML = `
-    <div class="popupHeader">time.exe</div>
+    <div class="popupHeader">TIME.EXE</div>
     <div class="popupContent">
       <p>LOADING...</p>
       <div class="miniBar">
@@ -1025,59 +1057,31 @@ function startFinalBehavior(popup, index) {
 
   let interval;
 
-  // 🎭 5 unique styles
+  // 🎯 SPEED CURVE (slow → insane fast)
+  const speeds = [
+    0.2, // 🐢 very slow
+    0.6,
+    1.5,
+    4,
+    15, // 💥 basically instant
+  ];
 
-  if (index === 0) {
-    // normal
-    interval = setInterval(() => {
-      value += 1.5;
-      if (value >= 100) finish();
-      bar.style.width = value + "%";
-    }, 50);
-  } else if (index === 1) {
-    // jumpy
-    interval = setInterval(() => {
-      value += Math.random() * 5;
-      if (value >= 100) finish();
-      bar.style.width = value + "%";
-    }, 80);
-  } else if (index === 2) {
-    // reverse glitch
-    interval = setInterval(() => {
-      value += 1;
+  const speed = speeds[index] || 1;
 
-      if (Math.random() < 0.3) value -= 2;
+  interval = setInterval(() => {
+    value += speed;
 
-      if (value >= 100) finish();
-      if (value < 0) value = 0;
+    if (value >= 100) finish();
 
-      bar.style.width = value + "%";
-    }, 50);
-  } else if (index === 3) {
-    // instant to 90 then slow
-    interval = setInterval(() => {
-      if (value < 90) value += 5;
-      else value += 0.3;
-
-      if (value >= 100) finish();
-      bar.style.width = value + "%";
-    }, 50);
-  } else if (index === 4) {
-    // super slow dramatic
-    interval = setInterval(() => {
-      value += 0.2;
-
-      if (value >= 100) finish();
-      bar.style.width = value + "%";
-    }, 50);
-  }
+    bar.style.width = value + "%";
+  }, 50);
 
   function finish() {
     clearInterval(interval);
     finished = true;
 
-    text.textContent = "ERROR";
-    bar.style.background = "red";
+    text.textContent = "DONE";
+    bar.style.background = "green";
 
     btn.textContent = "OK";
 
@@ -1085,9 +1089,15 @@ function startFinalBehavior(popup, index) {
       popup.remove();
 
       if (index === 4) {
-        startSpamPopups(); // 👈 FINAL TRIGGER
+        // ⏱ FINAL PAUSE BEFORE CHAOS
+        setTimeout(() => {
+          startSpamPopups();
+        }, 1000);
       } else {
-        spawnFinalPopup();
+        // ⏱ spacing between popups
+        setTimeout(() => {
+          spawnFinalPopup();
+        }, 600);
       }
     };
   }
@@ -1106,14 +1116,13 @@ function startSpamPopups() {
     const popup = document.createElement("div");
     popup.className = "popup";
 
-    const x = Math.random() * (window.innerWidth - width);
-    const y = Math.random() * (window.innerHeight - height);
+    const { x, y } = getChaosPosition(width, height);
 
     popup.style.left = x + "px";
     popup.style.top = y + "px";
 
     popup.innerHTML = `
-      <div class="popupHeader">time.exe</div>
+      <div class="popupHeader">TIME.EXE</div>
       <div class="popupContent">
         <p>LOADING...</p>
 
@@ -1173,12 +1182,9 @@ function startSpamLoading(popup) {
 
       btn.onclick = () => {
         popup.remove();
-        activeSpamPopups--;
 
-        // 🎁 WIN CONDITION
-        if (activeSpamPopups === 0) {
-          goToGridPage();
-        }
+        // 💥 THIS is the important part
+        restartExperience();
       };
     }
 
@@ -1194,33 +1200,85 @@ function makeDraggable(popup) {
   let offsetY = 0;
   let isDragging = false;
 
-  header.addEventListener("mousedown", (e) => {
+  function startDrag(clientX, clientY) {
     isDragging = true;
 
     const rect = popup.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
+    offsetX = clientX - rect.left;
+    offsetY = clientY - rect.top;
 
-    popup.style.zIndex = Date.now(); // bring to front
-  });
+    popup.style.zIndex = Date.now();
+  }
 
-  document.addEventListener("mousemove", (e) => {
+  function moveDrag(clientX, clientY) {
     if (!isDragging) return;
 
-    let x = e.clientX - offsetX;
-    let y = e.clientY - offsetY;
+    let x = clientX - offsetX;
+    let y = clientY - offsetY;
 
-    // keep inside screen
     x = Math.max(0, Math.min(x, window.innerWidth - popup.offsetWidth));
     y = Math.max(0, Math.min(y, window.innerHeight - popup.offsetHeight));
 
     popup.style.left = x + "px";
     popup.style.top = y + "px";
+  }
+
+  function endDrag() {
+    isDragging = false;
+  }
+
+  // 🖱 DESKTOP
+  header.addEventListener("mousedown", (e) => {
+    startDrag(e.clientX, e.clientY);
   });
 
-  document.addEventListener("mouseup", () => {
-    isDragging = false;
+  document.addEventListener("mousemove", (e) => {
+    moveDrag(e.clientX, e.clientY);
   });
+
+  document.addEventListener("mouseup", endDrag);
+
+  // 📱 MOBILE
+  header.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    startDrag(touch.clientX, touch.clientY);
+  });
+
+  document.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    moveDrag(touch.clientX, touch.clientY);
+  });
+
+  document.addEventListener("touchend", endDrag);
+}
+
+function restartExperience() {
+  // clear everything
+  popupLayer.innerHTML = "";
+
+  // reset ALL state
+  completedPopups = 0;
+  popupIndex = 0;
+  patternMode = false;
+  activePatternPopups = 0;
+  patternFinished = false;
+  spamMode = false;
+  activeSpamPopups = 0;
+  reversePatternDone = false;
+  pairFinished = 0;
+  chainFinished = 0;
+
+  // restart flow
+  setTimeout(() => {
+    startPopupSequence();
+  }, 500);
+}
+
+function getChaosPosition(width, height) {
+  return {
+    x: Math.random() * (window.innerWidth - width),
+    y: Math.random() * (window.innerHeight - height),
+  };
 }
 
 window.addEventListener("resize", rearrangePatternPopups);
