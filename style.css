@@ -1,0 +1,278 @@
+body {
+  margin: 0;
+  background: #e0e0e0;
+  font-family: "MS Sans Serif", Arial, sans-serif;
+  font-size: 14px;
+}
+/* Reset */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* 🚫 no scrolling */
+  background: #e0e0e0;
+}
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* hidden element */
+.hidden {
+  display: none;
+}
+
+/* button */
+#mainBtn {
+  padding: 10px 10px;
+  font-size: 14px;
+  background: #e0e0e0;
+  border: 2px solid #808080;
+  box-shadow: inset -2px -2px #ffffff, inset 2px 2px #808080;
+  cursor: pointer;
+}
+
+/* loading area */
+#loadingContainer {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* progress bar */
+.progressBar {
+  width: 220px;
+  height: 20px;
+  background: white;
+  border: 1px solid black;
+}
+
+#progress {
+  height: 100%;
+  width: 0%;
+  background: #000080;
+}
+
+#popupLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 99999; /* 🔥 VERY HIGH */
+  pointer-events: none;
+}
+
+/* POPUP WINDOW */
+.popup {
+  position: absolute;
+  width: 300px; 
+  background: #e0e0e0;
+  border: 2px solid #000;
+  box-shadow: 3px 3px #808080;
+  font-size: 14px;
+  pointer-events: auto;
+  z-index: 9999;
+}
+
+/* HEADER */
+.popupHeader {
+  background: #000080;
+  color: white;
+  padding: 4px;
+  font-size: 14px;
+}
+
+.popupHeader::after {
+  content: "×";
+  float: right;
+}
+
+/* CONTENT */
+.popupContent {
+  padding: 25px;
+  text-align: center;
+}
+
+.popup button {
+  margin-top: 6px;
+  padding: 10px 10px;
+  font-size: 14px;
+}
+.popup {
+  z-index: 9999;
+}
+
+.window.full {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #e0e0e0;
+  border: 2px solid #000;
+  box-sizing: border-box;
+}
+
+.titleBar {
+  background: #000080;
+  color: white;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.titleBar::after {
+  content: "×";
+  float: right;
+}
+
+
+/* Title bar stays on top */
+.titleBar {
+  background: #000080;
+  color: white;
+  padding: 6px;
+  font-size: 14px;
+  flex-shrink: 0; /* don't shrink */
+}
+
+#grid {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  background: white;
+  position: relative;
+  font-size: 0; /* 👈 kills inline spacing bugs */
+
+  align-content: stretch; /* 👈 important */
+}
+/* Fullscreen page */
+#gridPage {
+  position: fixed;
+  inset: 0;            /* top:0; right:0; bottom:0; left:0 */
+  z-index: 9999;
+}
+.miniBar {
+  width: 220px; /* 👈 SAME as main */
+  height: 20px;
+  background: white;
+  border: 1px solid black;
+  margin: 8px auto;
+}
+
+.miniProgress {
+  height: 100%;
+  width: 0%;
+  background: #000080;
+}
+
+.cell {
+  flex: 0 0 calc(100% / 20);
+  max-width: calc(100% / 20);
+  height: calc(100% / 20);
+
+  box-sizing: border-box;
+
+  background: #e0e0e0;
+
+  border: 2px solid #808080;
+  box-shadow: inset -2px -2px #ffffff, inset 2px 2px #808080;
+
+  margin: 0; /* ❗ REMOVE the -1px */
+}
+
+.cell.merged {
+  background: #c0c0c0;
+  box-shadow: inset 2px 2px #808080, inset -2px -2px #ffffff;
+
+  border: none; /* 👈 remove default border */
+}
+
+.cell.merged.edge-top    { border-top: 2px solid #808080; }
+.cell.merged.edge-bottom { border-bottom: 2px solid #808080; }
+.cell.merged.edge-left   { border-left: 2px solid #808080; }
+.cell.merged.edge-right  { border-right: 2px solid #808080; }
+
+.cell:not(.merged):hover {
+  background: #dcdcdc;
+  border: 2px solid #000080;
+  cursor: pointer;
+}
+
+.cell.finished {
+  background: #e0e0e0;
+
+  border: 2px solid #808080;
+  box-shadow: inset -2px -2px #ffffff, inset 2px 2px #808080;
+
+  cursor: pointer;
+}
+
+.cell.finished:hover {
+  background: #dcdcdc;
+  border: 2px solid #000080;
+}
+
+.bar {
+  position: absolute;
+  background: #000080;
+  height: 100%;
+}
+
+.okBtn {
+  margin-top: 8px;
+  padding: 3px 10px;
+  font-size: 14px;
+  background: #e0e0e0;
+  border: 2px solid #808080;
+  box-shadow: inset -2px -2px #ffffff, inset 2px 2px #808080;
+  cursor: pointer;
+}
+
+.okBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#mainBtn:hover,
+.okBtn:hover,
+.popup button:hover:not(:disabled) {
+  background: #dcdcdc;
+  border: 2px solid #000080;
+  cursor: pointer;
+}
+
+button:active:not(:disabled) {
+  box-shadow: inset 2px 2px #808080, inset -2px -2px #ffffff;
+}
+
+.popup:hover {
+  box-shadow: 4px 4px #606060;
+}
+
+button,
+.cell {
+  transition: all 0.15s ease;
+}
+
+.popupButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.actionBtn {
+  width: 90px;
+  padding: 6px 0;
+
+  font-size: 14px;
+  background: #e0e0e0;
+  border: 2px solid #808080;
+  box-shadow: inset -2px -2px #ffffff, inset 2px 2px #808080;
+}
+
+
+
+.staticWindow {
+  z-index: 1;
+  position: relative;
+}
