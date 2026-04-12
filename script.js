@@ -49,13 +49,25 @@ function bindMainButton() {
 
     if (!loading) {
       loading = true;
-      completedPopups = 10;
-      popupIndex = 10;
-      patternMode = true;
-      startPatternPopups();
 
-      return;
+      // 👇 HIDE the whole default popup
+      const container = document.getElementById("container");
+      if (container) container.style.display = "none";
+
+      startLoading();
     }
+
+    /*//if (!loading) {
+    loading = true;
+
+     👇 DEBUG SKIP
+  completedPopups = 10;
+  popupIndex = 10;
+  patternMode = true;
+  startPatternPopups();
+
+  return;
+}*/
   });
 }
 
