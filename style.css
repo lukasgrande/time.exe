@@ -4,6 +4,14 @@ body {
   font-family: "MS Sans Serif", Arial, sans-serif;
   font-size: 14px;
 }
+
+@font-face {
+  font-family: "SegoeCustom";
+  src: url("fonts/Segoe UI.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Reset */
 html, body {
   height: 100%;
