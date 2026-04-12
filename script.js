@@ -148,14 +148,20 @@ function spawnSequentialPopup() {
 
   let x, y;
 
-  if (isMobile) {
-    // 📱 just center it (super simple, no stacking yet)
+  // 🎯 FIRST 5 POPUPS → CENTERED
+  if (popupIndex <= 5) {
     x = (window.innerWidth - popupWidth) / 2;
     y = (window.innerHeight - popupHeight) / 2;
   } else {
-    const pos = getRandomPosition(popupWidth, popupHeight);
-    x = pos.x;
-    y = pos.y;
+    // 👇 everything after behaves like before
+    if (isMobile) {
+      x = (window.innerWidth - popupWidth) / 2;
+      y = (window.innerHeight - popupHeight) / 2;
+    } else {
+      const pos = getRandomPosition(popupWidth, popupHeight);
+      x = pos.x;
+      y = pos.y;
+    }
   }
 
   popup.style.left = x + "px";
