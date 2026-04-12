@@ -32,7 +32,7 @@ function showIntroPopup() {
   popup.innerHTML = `
     <div class="popupHeader">TIME.EXE</div>
     <div class="popupContent">
-      <p style="text-align:left; line-height:1.4;">
+      <p style="text-align:center; line-height:1.4;">
         This project explores time as something experienced rather than measured.
         Through delays, repetition, and interruption, the interface creates a system the user must navigate.
         What begins as a simple loading process gradually fragments into multiple tasks.
