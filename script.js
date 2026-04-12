@@ -49,23 +49,13 @@ function bindMainButton() {
 
     if (!loading) {
       loading = true;
+      completedPopups = 10;
+      popupIndex = 10;
+      patternMode = true;
+      startPatternPopups();
 
-      // 👇 HIDE the whole default popup
-      const container = document.getElementById("container");
-      if (container) container.style.display = "none";
-
-      startLoading();
+      return;
     }
-
-    /*//if (!loading) {
-    loading = true;
-  completedPopups = 10;
-  popupIndex = 10;
-  patternMode = true;
-  startPatternPopups();
-
-  return;
-}*/
   });
 }
 
@@ -135,9 +125,11 @@ function getPopupSize() {
 function spawnSequentialPopup() {
   const popup = document.createElement("div");
   popup.className = "popup";
+  popup.style.width = popupWidth + "px";
+  popup.style.height = popupHeight + "px";
 
-  const popupWidth = isMobile ? 340 : 300;
-  const popupHeight = isMobile ? 180 : 150;
+  const popupWidth = isMobile ? 400 : 318;
+  const popupHeight = isMobile ? 300 : 213;
 
   let x, y;
 
@@ -467,7 +459,7 @@ function startReversePatternPopups() {
 function getGrid() {
   const { width: popupWidth, height: popupHeight } = getPopupSize();
 
-  const cols = 5; // keep or tweak
+  const cols = 6; // keep or tweak
   const rows = 5; // 👈 force 5 rows
 
   return { cols, rows, popupWidth, popupHeight };

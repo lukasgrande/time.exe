@@ -64,7 +64,8 @@ html, body {
 /* POPUP WINDOW */
 .popup {
   position: absolute;
-  width: 300px; 
+  width: 318px; 
+  height: 213px;
   background: #e0e0e0;
   border: 2px solid #000;
   box-shadow: 3px 3px #808080;
@@ -82,7 +83,7 @@ html, body {
 }
 
 .popupHeader::after {
-  content: "×";
+  content: "";
   float: right;
 }
 
@@ -245,7 +246,7 @@ button:active:not(:disabled) {
 }
 
 .popup:hover {
-  box-shadow: 4px 4px #606060;
+  box-shadow: 1px 1px #606060;
 }
 
 button,
