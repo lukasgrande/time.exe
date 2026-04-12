@@ -137,11 +137,8 @@ function getPopupSize() {
 function spawnSequentialPopup() {
   const popup = document.createElement("div");
   popup.className = "popup";
-  popup.style.width = popupWidth + "px";
-  popup.style.height = popupHeight + "px";
 
-  const popupWidth = isMobile ? 400 : 318;
-  const popupHeight = isMobile ? 300 : 213;
+  const { width: popupWidth, height: popupHeight } = getPopupSize();
 
   let x, y;
 
