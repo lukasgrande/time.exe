@@ -302,8 +302,8 @@ button,
 #floatingText {
   position: absolute;
 
-  padding: 10px 15px;
-  font-size: 32px;
+  padding: 8px 12px;
+  font-size: 14px;
 
   background: #e0e0e0;
   color: black;
@@ -314,6 +314,44 @@ button,
   font-family: "SegoeCustom", "MS Sans Serif", Arial, sans-serif;
 
   cursor: default; /* 👈 important so it doesn't feel clickable */
+}
+
+.popupLarge {
+  position: absolute;
+
+  width: 420px;
+  max-width: 90vw;
+
+  max-height: 80vh;
+  overflow-y: auto;
+
+  background: #e0e0e0;
+  border: 2px solid #000;
+  box-shadow: 3px 3px #808080;
+
+  font-size: 14px;
+  pointer-events: auto;
+  z-index: 9999;
+}
+
+.popupLarge .popupContent {
+  padding: 20px;
+  text-align: left;
+}
+
+.popupLarge p {
+  line-height: 1.5;
+}
+
+.popupLarge .actionBtn {
+  display: block;
+  margin: 20px auto 0; /* 👈 centers horizontally */
+}
+
+.popupLarge button:hover {
+  background: #dcdcdc;
+  border: 2px solid #000080;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {

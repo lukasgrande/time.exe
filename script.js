@@ -21,65 +21,51 @@ let reversePatternDone = false;
 const isMobile = window.innerWidth < 600;
 let spawnIndex = 0;
 
-// ===== INTRO SCREEN =====
-let introActive = true;
+function showIntroPopup() {
+  const popup = document.createElement("div");
+  popup.className = "popupLarge";
 
-const intro = document.getElementById("introScreen");
-const text = document.getElementById("floatingText");
+  popup.style.left = "50%";
+  popup.style.top = "50%";
+  popup.style.transform = "translate(-50%, -50%)";
 
-let x = 100;
-let y = 100;
-let dx = 0.8;
-let dy = 0.6;
+  popup.innerHTML = `
+    <div class="popupHeader">TIME.EXE</div>
+    <div class="popupContent">
+      <p style="text-align:left; line-height:1.4;">
+        This project explores time as something experienced rather than measured.
+        Through delays, repetition, and interruption, the interface creates a system the user must navigate.
+        What begins as a simple loading process gradually fragments into multiple tasks.
+        Control shifts from user to system, as processes multiply and accelerate.<br><br>
 
-function animateIntro() {
-  if (!introActive) return;
+        The work references familiar desktop environments and everyday workflows,
+        extending into a staged physical setup.<br><br>
 
-  const rect = text.getBoundingClientRect();
+        Time is not shown — it is felt through interaction.<br><br>
 
-  x += dx;
-  y += dy;
+        Lukas Andrea Grande<br>
+        Communication Design<br>
+        Hongik University
+      </p>
 
-  if (x <= 0 || x + rect.width >= window.innerWidth) {
-    dx *= -1;
-  }
+      <button class="actionBtn">OK</button>
+    </div>
+  `;
 
-  if (y <= 0 || y + rect.height >= window.innerHeight) {
-    dy *= -1;
-  }
+  popupLayer.appendChild(popup);
 
-  text.style.left = x + "px";
-  text.style.top = y + "px";
+  const btn = popup.querySelector("button");
 
-  requestAnimationFrame(animateIntro);
+  btn.onclick = () => {
+    popup.remove();
+
+    // 🚀 START EXPERIENCE DIRECTLY
+    loading = true;
+    startLoading();
+  };
+
+  makeDraggable(popup);
 }
-
-animateIntro();
-
-function exitIntro() {
-  if (!introActive) return;
-
-  introActive = false;
-
-  intro.style.transition = "opacity 0.4s ease";
-  intro.style.opacity = "0";
-
-  setTimeout(() => {
-    intro.remove();
-
-    // 👇 show your actual UI
-    document.getElementById("container").style.display = "flex";
-  }, 400);
-}
-
-// desktop
-document.addEventListener("mousemove", exitIntro);
-
-// mobile
-document.addEventListener("touchstart", exitIntro);
-
-// optional
-document.addEventListener("click", exitIntro);
 
 function getRandomPosition(width, height) {
   const padding = 20;
@@ -96,39 +82,6 @@ function getRandomPosition(width, height) {
   const x = padding + Math.random() * (window.innerWidth - width - padding * 2);
 
   return { x, y };
-}
-
-function bindMainButton() {
-  const btn = document.getElementById("mainBtn");
-  if (!btn) return; // 👈 ADD THIS (prevents crash)
-  btn.addEventListener("click", () => {
-    if (btn.textContent === "OK" && loading) {
-      goToGridPage();
-      return;
-    }
-
-    if (!loading) {
-      loading = true;
-
-      // 👇 HIDE the whole default popup
-      const container = document.getElementById("container");
-      if (container) container.style.display = "none";
-
-      startLoading();
-    }
-
-    /*//if (!loading) {
-    loading = true;
-
-     👇 DEBUG SKIP
-  completedPopups = 10;
-  popupIndex = 10;
-  patternMode = true;
-  startPatternPopups();
-
-  return;
-}*/
-  });
 }
 
 function startPopupSequence() {
@@ -159,13 +112,6 @@ function reset() {
 
   loading = false;
   popupIndex = 0;
-
-  document.getElementById("container").innerHTML = `
-  <button id="mainBtn">START</button>
-`;
-
-  document.getElementById("container").style.display = "flex";
-  bindMainButton();
 }
 
 function getPopupSize() {
@@ -939,7 +885,6 @@ function updateMergedEdges() {
       cell.classList.add("edge-right");
   });
 }
-bindMainButton();
 
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
@@ -1265,6 +1210,14 @@ function makeDraggable(popup) {
     isDragging = true;
 
     const rect = popup.getBoundingClientRect();
+
+    // 🔥 REMOVE CENTERING TRANSFORM
+    popup.style.transform = "none";
+
+    // 🔥 LOCK CURRENT POSITION (important!)
+    popup.style.left = rect.left + "px";
+    popup.style.top = rect.top + "px";
+
     offsetX = clientX - rect.left;
     offsetY = clientY - rect.top;
 
@@ -1343,3 +1296,9 @@ function getChaosPosition(width, height) {
 }
 
 window.addEventListener("resize", rearrangePatternPopups);
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    showIntroPopup();
+  }, 300);
+});
