@@ -21,6 +21,66 @@ let reversePatternDone = false;
 const isMobile = window.innerWidth < 600;
 let spawnIndex = 0;
 
+// ===== INTRO SCREEN =====
+let introActive = true;
+
+const intro = document.getElementById("introScreen");
+const text = document.getElementById("floatingText");
+
+let x = 100;
+let y = 100;
+let dx = 0.8;
+let dy = 0.6;
+
+function animateIntro() {
+  if (!introActive) return;
+
+  const rect = text.getBoundingClientRect();
+
+  x += dx;
+  y += dy;
+
+  if (x <= 0 || x + rect.width >= window.innerWidth) {
+    dx *= -1;
+  }
+
+  if (y <= 0 || y + rect.height >= window.innerHeight) {
+    dy *= -1;
+  }
+
+  text.style.left = x + "px";
+  text.style.top = y + "px";
+
+  requestAnimationFrame(animateIntro);
+}
+
+animateIntro();
+
+function exitIntro() {
+  if (!introActive) return;
+
+  introActive = false;
+
+  intro.style.transition = "opacity 0.4s ease";
+  intro.style.opacity = "0";
+
+  setTimeout(() => {
+    intro.remove();
+
+    // 👇 show your actual UI
+    document.getElementById("container").style.display = "flex";
+  }, 400);
+}
+
+// desktop
+document.addEventListener("mousemove", exitIntro);
+
+// mobile
+document.addEventListener("touchstart", exitIntro);
+
+// optional
+document.addEventListener("click", exitIntro);
+
 function getRandomPosition(width, height) {
   const padding = 20;
 
