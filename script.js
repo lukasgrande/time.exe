@@ -480,7 +480,7 @@ function startReversePatternPopups() {
 function getGrid() {
   const { width: popupWidth, height: popupHeight } = getPopupSize();
 
-  const cols = 6; // keep or tweak
+  const cols = 5; // keep or tweak
   const rows = 5; // 👈 force 5 rows
 
   return { cols, rows, popupWidth, popupHeight };
